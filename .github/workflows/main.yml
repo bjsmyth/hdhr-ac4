@@ -1,0 +1,35 @@
+name: HDHR-AC4
+
+on:
+  push:
+    branches:
+      - '**'
+env:
+  IMAGE_NAME: bsmyth/hdhr-ac4
+  EMBY_VER: 4.8.8.0
+  EMBY_DEB: emby-server-deb_${{ env.EMBY_VER }}_amd64.deb
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Free up disk space on github runner
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          # android: false
+          # dotnet: false
+          # haskell: false
+          # large-packages: false
+          # swap-storage: false
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Emby deb
+        run: |
+          wget https://github.com/MediaBrowser/Emby.Releases/releases/download/${{ env.EMBY_VER }}/${{ env.EMBY_DEB}}
+      
+      - name: Build Docker image
+        run: |
+          docker build -f Dockerfile -t hdhr-ac4 .

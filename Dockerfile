@@ -1,4 +1,4 @@
-FROM        ubuntu:20.04 AS base
+FROM        ubuntu:24.04 AS base
 
 WORKDIR     /home
 
@@ -11,8 +11,8 @@ RUN     apt-get -yqq update && \
 # https://emby.media/linux-server.html add in repo directory
 FROM base as ffmpeg
 RUN apt-get install -y binutils xz-utils
-COPY emby-server-deb_4.8.0.21_amd64.deb ./
-RUN ar x emby-server-deb_4.8.0.21_amd64.deb data.tar.xz && \
+COPY emby-server-deb_4.8.8.0_amd64.deb ./
+RUN ar x emby-server-deb_4.8.8.0_amd64.deb data.tar.xz && \
     tar xf data.tar.xz
 
 # Setup python and copy over ffmpeg
