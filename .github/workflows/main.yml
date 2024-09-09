@@ -7,7 +7,6 @@ on:
 env:
   IMAGE_NAME: bsmyth/hdhr-ac4
   EMBY_VER: 4.8.8.0
-  EMBY_DEB: emby-server-deb_${{ env.EMBY_VER }}_amd64.deb
 
 jobs:
   build:
@@ -28,8 +27,8 @@ jobs:
 
       - name: Get Emby deb
         run: |
-          wget https://github.com/MediaBrowser/Emby.Releases/releases/download/${{ env.EMBY_VER }}/${{ env.EMBY_DEB}}
+          wget https://github.com/MediaBrowser/Emby.Releases/releases/download/${{ env.EMBY_VER }}/emby-server-deb_${{ env.EMBY_VER }}_amd64.deb
       
       - name: Build Docker image
         run: |
-          docker build -f Dockerfile -t hdhr-ac4 .
+          docker build -f Dockerfile -t ${{ env.IMAGE_NAME }} .
