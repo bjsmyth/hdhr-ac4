@@ -20,7 +20,7 @@ FROM base AS final
 
 WORKDIR /home
 
-RUN apt-get install -y python3 pip libfontconfig curl
+RUN apt-get install -y python3-full pip libfontconfig curl
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY *.py ./
