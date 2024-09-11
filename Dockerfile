@@ -1,4 +1,4 @@
-FROM        ubuntu:20.04 AS base
+FROM        ubuntu:24.04 AS base
 
 WORKDIR     /home
 
@@ -22,7 +22,7 @@ WORKDIR /home
 
 RUN apt-get install -y python3 pip libfontconfig curl
 COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt --break-system-packages
 COPY *.py ./
 
 COPY --from=ffmpeg /home/opt/emby-server/bin/ffmpeg /usr/bin/ffmpeg
