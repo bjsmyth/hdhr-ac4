@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  IMAGE_NAME: bsmyth/hdhr-ac4
+  IMAGE_NAME: bjsmyth/hdhr-ac4
   EMBY_VER: 4.8.8.0
 
 jobs:
