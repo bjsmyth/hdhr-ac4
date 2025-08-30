@@ -6,7 +6,7 @@ on:
 
 env:
   IMAGE_NAME: bjsmyth/hdhr-ac4
-  EMBY_VER: 4.8.8.0
+  EMBY_VER: 4.8.11.0
 
 jobs:
   push_to_registry:
