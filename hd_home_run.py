@@ -58,39 +58,45 @@ class HdHomeRun:
         """Gets the hd home run status"""
         return requests.get(self._base_url + "/lineup_status.json").text
 
-    def tune(self, channel: str, stream_out: Request) -> None:
-        """Streams channel from hdhr until device disconnects"""
-        stream_in = requests.get(self._base_url + ":5004/auto/" + channel, stream=True)
-        if stream_in.status_code == 200:
-            ffmpeg = Popen(
-                [
-                    "/usr/bin/ffmpeg",
-                    "-nostats",
-                    "-hide_banner",
-                    "-loglevel",
-                    "warning",
-                    "-i",
-                    "pipe:",
-                    "-c:a",
-                    "ac3",
-                    "-c:v",
-                    "copy",
-                    "-f",
-                    "mpegts",
-                    "-",
-                ],
-                stdout=PIPE,
-                stdin=PIPE,
-            )
-            feeder = Thread(target=stream_requests_to_ffmpeg, args=(stream_in, ffmpeg))
-            feeder.start()
-            return StreamingResponse(
-                stream_ffmpeg_to_response(ffmpeg, feeder, stream_out),
-                headers=stream_in.headers,
-            )
-        else:
-            stream_in.close()
-            del stream_in.headers["Content-Length"]
-            raise HTTPException(
-                status_code=stream_in.status_code, headers=stream_in.headers
+    def tune(self, channel: str, stream_out: Request) -> None:                                                                       
+        """Streams channel from hdhr until device disconnects"""                                                                     
+        stream_in = requests.get(self._base_url + ":5004/auto/" + channel, stream=True)                                              
+        if stream_in.status_code == 200:                                                                                             
+            ffmpeg = Popen(                                                                                                          
+                [                                                                                                                    
+                    "/usr/bin/ffmpeg",                                                                                               
+                    "-nostats",                                                                                                      
+                    "-hide_banner",                                                                                                  
+                    "-loglevel",                                                                                                     
+                    "warning",                                                                                                       
+                    "-i",                                                                                                            
+                    "pipe:",                                                                                                         
+                    "-map",                                                                                                          
+                    "0:v:0",                                                                                                         
+                    "-map",                                                                                                          
+                    "0:a:0",                                                                                                         
+                    "-c:a:0",                                                                                                        
+                    "eac3",                                                                                                          
+                    "-async",                                                                                                        
+                    "1",                                                                                                             
+                    "-c:v",                                                                                                          
+                    "copy",                                                                                                          
+                    "-f",                                                                                                            
+                    "mpegts",                                                                                                        
+                    "-",                                                                                                             
+                ],                                                                                                                   
+                stdout=PIPE,                                                                                                         
+                stdin=PIPE,                                                                                                          
+            )                                                                                                                        
+            feeder = Thread(target=stream_requests_to_ffmpeg, args=(stream_in, ffmpeg))                                              
+            feeder.start()                                                                                                           
+            return StreamingResponse(                                                                                                
+                stream_ffmpeg_to_response(ffmpeg, feeder, stream_out),                                                               
+                headers=stream_in.headers,                                                                                           
+            )                                                                                                                        
+        else:                                                                                                                        
+            stream_in.close()                                                                                                        
+            del stream_in.headers["Content-Length"]                                                                                  
+            raise HTTPException(                                                                                                     
+                status_code=stream_in.status_code, headers=stream_in.headers                                                         
             )
