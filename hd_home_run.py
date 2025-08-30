@@ -76,7 +76,7 @@ class HdHomeRun:
                     "-map",                                                                                                          
                     "0:a:0",                                                                                                         
                     "-c:a:0",                                                                                                        
-                    "eac3",                                                                                                          
+                    "ac3",                                                                                                          
                     "-async",                                                                                                        
                     "1",                                                                                                             
                     "-c:v",                                                                                                          
@@ -84,7 +84,7 @@ class HdHomeRun:
                     "-f",                                                                                                            
                     "mpegts",                                                                                                        
                     "-",                                                                                                             
-                ],                                                                                                                   
+                ],                                                                                                               
                 stdout=PIPE,                                                                                                         
                 stdin=PIPE,                                                                                                          
             )                                                                                                                        
